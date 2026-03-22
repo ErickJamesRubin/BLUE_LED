@@ -1,0 +1,144 @@
+<?php
+// ============================================================
+// index.php — ESP32 Blue LED Control Dashboard
+// Mobile Legends: Bang Bang Theme
+// ============================================================
+?><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050d1a">
+  <title>ESP32 LED Control — ML Theme</title>
+
+  <!-- ── Favicon (inline SVG) ── -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23050d1a' stroke='%23f0c040' stroke-width='2'/><circle cx='16' cy='16' r='6' fill='%2300aaff'/></svg>">
+
+  <!-- ── Google Fonts (loaded via CSS) ── -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     Sound toggle button (fixed position)
+════════════════════════════════════════════════════════════ -->
+<button class="sound-btn" id="sound-toggle" title="Play music">🔇</button>
+
+<!-- Background music (looped) -->
+<!-- 🎵 Replace src with your own .mp3 file path -->
+<audio id="bg-music" loop preload="auto">
+  <!-- Primary: use an ML-style background track you own -->
+  <source src="audio/bg-music.mp3" type="audio/mpeg">
+  <!-- Fallback: royalty-free OGG (place your own file here) -->
+  <source src="audio/bg-music.ogg" type="audio/ogg">
+  <!-- If no local file: comment out above and use an online CDN track -->
+</audio>
+
+<!-- ════════════════════════════════════════════════════════
+     Main wrapper
+════════════════════════════════════════════════════════════ -->
+<div class="wrapper">
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-ornament">
+      <div class="diamond"></div>
+    </div>
+    <h1>ESP32 Command Center</h1>
+    <p class="header-sub">Blue LED &nbsp;·&nbsp; IoT Control &nbsp;·&nbsp; PHP + MySQL</p>
+  </header>
+
+  <!-- ── Status Panel ── -->
+  <section class="panel" aria-label="LED Status">
+    <div class="panel-title">⚔ Battle Status</div>
+
+    <div class="status-panel">
+      <!-- Visual LED indicator -->
+      <div class="led-visual">
+        <div class="led-bulb state-off" id="led-bulb" aria-label="LED visual indicator"></div>
+        <span class="led-label">GPIO 2</span>
+      </div>
+
+      <!-- Text status -->
+      <div class="status-info">
+        <div class="status-badge s-off" id="status-badge">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">⬛ OFF</span>
+        </div>
+        <div class="status-meta">
+          <div id="status-code">VALUE = 0</div>
+          <div id="status-time">Last: —</div>
+          <div>Polling every 2 s &nbsp;|&nbsp; AJAX live update</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Control Buttons ── -->
+  <section class="panel" aria-label="LED Controls">
+    <div class="panel-title">🎮 Hero Controls</div>
+
+    <div class="controls">
+      <!-- TURN OFF -->
+      <button class="btn-control btn-off active" id="btn-off" aria-label="Turn LED off">
+        <span class="btn-icon">⬛</span>
+        <span class="btn-label">TURN OFF</span>
+        <span class="btn-sub">STATUS 0</span>
+      </button>
+
+      <!-- TURN ON -->
+      <button class="btn-control btn-on" id="btn-on" aria-label="Turn LED on">
+        <span class="btn-icon">💡</span>
+        <span class="btn-label">TURN ON</span>
+        <span class="btn-sub">STATUS 1</span>
+      </button>
+
+      <!-- BLINK -->
+      <button class="btn-control btn-blink" id="btn-blink" aria-label="Set LED to blink">
+        <span class="btn-icon">⚡</span>
+        <span class="btn-label">BLINK</span>
+        <span class="btn-sub">STATUS 2 · 500ms</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ── Activity Log ── -->
+  <section class="panel" aria-label="Activity log">
+    <div class="panel-title">📜 Battle Log</div>
+
+    <div class="log-table-wrap">
+      <table class="log-table" aria-label="Recent LED actions">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Action</th>
+            <th>Value</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody id="log-body">
+          <tr>
+            <td colspan="4" class="log-empty">Loading…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    ESP32 &nbsp;·&nbsp; PHP &nbsp;·&nbsp; MySQL &nbsp;·&nbsp;
+    <span>Mobile Legends Theme</span> &nbsp;·&nbsp;
+    GPIO 2 — Blue LED
+  </footer>
+
+</div><!-- .wrapper -->
+
+<!-- ── Toast notification ── -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ── Scripts ── -->
+<script src="script.js"></script>
+
+</body>
+</html>
